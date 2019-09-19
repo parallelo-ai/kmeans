@@ -29,7 +29,7 @@ func NewKmeansWithOptions(deltaThreshold float64, iterationThreshold int) (*Kmea
 	}
 
 	if iterationThreshold < 0 {
-		return nil, fmt.Errorf("iteration threshold is out of bounds (must be > 0)")
+		return nil, fmt.Errorf("iteration threshold is out of bounds (must be >= 0)")
 	}
 
 	return &Kmeans{
