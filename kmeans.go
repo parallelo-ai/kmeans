@@ -101,7 +101,8 @@ func (m *Kmeans) Partition(dataset Observations, k int, seed int64) (Clusters, e
 		}
 		if i == m.iterationThreshold ||
 			changes < int(float64(len(dataset))*m.deltaThreshold) {
-			return Clusters{}, fmt.Errorf("iteration threshold '%d' reached", m.iterationThreshold)
+			// return Clusters{}, fmt.Errorf("iteration threshold '%d' reached", m.iterationThreshold)
+			break
 		}
 	}
 
