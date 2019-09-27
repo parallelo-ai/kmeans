@@ -1,19 +1,72 @@
 package kmeans
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
+	"io/ioutil"
 	"math/rand"
+	"os"
 	"time"
 )
 
 // A Cluster which data points gravitate around
 type Cluster struct {
-	Center       Coordinates
-	Observations Observations
+	Center       Coordinates  `json:"center"`
+	Observations Observations `json:"-"`
 }
 
 // Clusters is a slice of clusters
 type Clusters []Cluster
+
+// Save serializes the clustering to a file
+// Bear in mind that this method does not save the data points (Observations)
+// just saves the trained centers
+func (c *Clusters) Save(filePath string) error {
+
+	if filePath == "" {
+		return errors.New("No file path specified")
+	}
+
+	b, err := json.Marshal(c)
+	if err != nil {
+		return err
+	}
+
+	f, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+
+	if _, err := f.Write(b); err != nil {
+		return err
+	}
+
+	return f.Close()
+}
+
+// LoadClusters load clustes from file  at filePath
+// Bear in mind that this does not loads observations
+func LoadClusters(filePath string) (*Clusters, error) {
+	f, err := os.Open(filePath)
+	if err != nil {
+		return nil, err
+	}
+
+	b, err := ioutil.ReadAll(f)
+	if err != nil {
+		return nil, err
+	}
+
+	var c Clusters
+
+	err = json.Unmarshal(b, &c)
+	if err != nil {
+		return nil, err
+	}
+
+	return &c, f.Close()
+}
 
 // NewClusters sets up a new set of clusters and seeds their initial positions according
 // to seed. If seed is 0 the seed is taken by the current time
