@@ -30,16 +30,16 @@ func main() {
 		panic(err)
 	}
 
-	nc, err := kmeans.LoadClusters("saved.json")
+	loadedClusters, err := kmeans.LoadClusters("saved.json")
 	if err != nil {
 		panic(err)
 	}
 
-	for i, c := range *nc {
+	for i, c := range *loadedClusters {
 		fmt.Printf("Cluster: %d\n", i)
 		fmt.Printf("Centered at x: %.2f y: %.2f\n", c.Center[0], c.Center[1])
 	}
 
 	fmt.Println("Nearest to (0.1, 0.2)")
-	fmt.Println(nc.Nearest(kmeans.Coordinates{0.1, 0.2}))
+	fmt.Println(loadedClusters.Nearest(kmeans.Coordinates{0.1, 0.2}))
 }

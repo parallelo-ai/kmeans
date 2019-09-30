@@ -10,8 +10,8 @@ type Coordinates []float64
 
 // Observation is a data point (float64 between 0.0 and 1.0) in n dimensions
 type Observation interface {
-	Coordinates() Coordinates
-	Distance(point Coordinates) float64
+	Coordinates() Coordinates           // return kmeans.Coordinates
+	Distance(point Coordinates) float64 // receives kmeans.Coordinates returns float64
 }
 
 // Observations is a slice of observations
